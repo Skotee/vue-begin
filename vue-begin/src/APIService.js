@@ -6,7 +6,6 @@ var id_employee;
   export const getEmployees = async () => {
     const url = `${API_URL}/employees`;
     const response = await axios.get(url);
-    console.log(response.data[0]);
     return response.data;
   }
 
@@ -15,20 +14,21 @@ var id_employee;
 
   }
 
-//   createEmployee() {
-//     const url = `${API_URL}/create`;
-//     return axios.get(url).then(response => response.data);
-//   }
+  export const createEmployee = async () => {
+    const url = `${API_URL}/create`;
+    const response = await axios.get(url);
+    return response.data;
+  }
 
-//   updateEmployee() {
-//     const url = `${API_URL}/update/${id_employee}`;
-//     return axios.get(url).then(response => response.data);
-//   }
+  export const updateEmployee = async () => {
+    const url = `${API_URL}/update/${id_employee}`;
+    return axios.get(url).then(response => response.data);
+  }
 
-//   deleteEmployee() {
-//     const url = `${API_URL}/delete/${id_employee}`;
-//     return axios.get(url).then(response => response.data);
-//   }
+  export const deleteEmployee = async () => {
+    const url = `${API_URL}/delete/${id_employee}`;
+    return axios.get(url).then(response => response.data);
+  }
 
 
 

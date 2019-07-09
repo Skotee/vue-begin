@@ -121,7 +121,7 @@
         this.employees = await APIService.getEmployees();
       },
 
-      async create() {
+      create() {
         APIService.createEmployee();
       },
 
@@ -139,6 +139,16 @@
           salary: this.dialogSalary,
           age: this.dialogAge
         }
+      },
+
+      update(id) {
+        this.employees = APIService.updateEmployee(id);
+      },
+
+      async remove(id) {
+        await APIService.deleteEmployee(id);
+        let arrayIndex = this.employees.findIndex(x => x.id === id);
+        this.employees.splice(arrayIndex,1)
       }
     }
   }

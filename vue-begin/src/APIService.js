@@ -1,7 +1,5 @@
 import axios from 'axios';
 const API_URL = 'http://dummy.restapiexample.com/api/v1';
-var id_employee;
-
 
   export const getEmployees = async () => {
     const url = `${API_URL}/employees`;
@@ -9,26 +7,24 @@ var id_employee;
     return response.data;
   }
 
-  export const writeme = () => {
-    console.log("siema");
-
-  }
-
-  export const createEmployee = async () => {
+  export const createEmployee = async (payload) => {
     const url = `${API_URL}/create`;
-    const response = await axios.get(url);
+    const response = await axios.post(url,payload);
     return response.data;
   }
 
-  export const updateEmployee = async () => {
-    const url = `${API_URL}/update/${id_employee}`;
-    return axios.get(url).then(response => response.data);
+  export const updateEmployee = async (idEmployee, payload) => {
+    const url = `${API_URL}/update/${idEmployee}`;
+    const response = await axios.put(url,payload);
+    return response.data;
   }
 
-  export const deleteEmployee = async () => {
-    const url = `${API_URL}/delete/${id_employee}`;
-    return axios.get(url).then(response => response.data);
+  export const deleteEmployee = async (idEmployee) => {
+    const url = `${API_URL}/delete/${idEmployee}`;
+    const response = await axios.delete(url);
+    return response.data;
   }
 
-
-
+  // export const writeme = () => {
+  //   console.log("siema");
+  // }

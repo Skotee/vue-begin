@@ -4,13 +4,13 @@
 
     <h2>Add new employee</h2>
     <v-flex class="text-xs-center py-3">
-      <v-btn @click="showDialog(true)" color="primary">
+      <v-btn @click="showDialog(true,employee)" color="primary">
         <v-icon>add</v-icon> Add Employee
       </v-btn>
     </v-flex>
 
     <h2>Display all employees</h2>
-    <v-list>
+    <v-list three-line>
       <v-list-tile v-for="employee in paginatedEmployees"
         class="employees"
         v-bind:key="employee.id"
@@ -18,7 +18,11 @@
         <v-list-tile-content>
           <v-list-tile-title>
             Name: {{ employee.employee_name }}
+          </v-list-tile-title>
+          <v-list-tile-title>
             Salary: {{ employee.employee_salary | currency }}
+          </v-list-tile-title>
+          <v-list-tile-title>
             Age: {{ employee.employee_age }}
           </v-list-tile-title>
         </v-list-tile-content>
@@ -46,27 +50,35 @@
    <v-dialog v-model="dialogShow" persistent max-width="500px">
     <v-card>
       <v-card-title>
-        <span class="headline" v-if="dialogId">Update employee</span>
+        <span class="headline" v-if="dialogForm.dialogId">Update employee</span>
         <span class="headline" v-else>Add employee</span>
       </v-card-title>
       <v-card-text>
         <v-container grid-list-md>
           <v-layout wrap>
             <v-flex xs12 sm6>
-              <v-text-field label="Employee name"
-                v-model="dialogName" required/>
+              <v-text-field 
+                label="Employee name"
+                v-model="dialogForm.dialogName" 
+                required/>
             </v-flex>
             <v-flex xs12 sm6>
               <v-text-field
                 label="Salary"
                 type="number"
                 min="0"
-                v-model="dialogSalary" required>
+                v-model="dialogForm.dialogSalary" 
+                required>
               </v-text-field>
             </v-flex>
             <v-flex xs12 sm6>
-              <v-text-field label="Age"
-                v-model="dialogAge" required>
+              <v-text-field 
+                label="Age"
+                type="number"
+                min="0"
+                max="120"
+                v-model="dialogForm.dialogAge" 
+                required>
               </v-text-field>
             </v-flex>
           </v-layout>
@@ -77,16 +89,26 @@
         <v-btn color="blue darken-1" flat
           @click="showDialog(false)">Close</v-btn>
         <v-btn color="blue darken-1" flat
-          @click="save">Save</v-btn>
+         v-if="dialogForm.dialogId" @click="add()">Add</v-btn>
+         <v-btn color="blue darken-1" flat
+         v-else @click="update(dialogForm.dialogId)">Update</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
   </div>
 </template>
 
-
 <script>
   import * as APIService from '../APIService';
+
+const createDefaultItem = () => ({
+  dialogName: '',
+  dialogSalary: '',
+  dialogShow: false,
+  dialogId: true,
+  dialogAge: null,
+})
+
   export default {
     name: 'Employees',
     props: {
@@ -98,16 +120,18 @@
             employeesPerPage: 20,
             currentPage: 1,
             dialogShow: false,
-            dialogId: null,
-            dialogName: null,
-            dialogSalary: null,
-            dialogAge: null,
+            dialogForm:{
+              dialogId: null,
+              dialogName: null,
+              dialogSalary: null,
+              dialogAge: null,
+            }
         };
     },
 
     computed: {
       paginatedEmployees() {
-        return  this.employees.slice(
+        return this.employees.slice(
           this.currentPage * this.employeesPerPage, (this.currentPage + 1) * this.employeesPerPage - 1);
       }
     },
@@ -121,28 +145,35 @@
         this.employees = await APIService.getEmployees();
       },
 
-      create() {
-        APIService.createEmployee();
-      },
-
-      showDialog(show, item) {
+      showDialog(show, item = createDefaultItem()  ) {
         this.dialogShow = show;
-        this.dialogId = (item || {}).id;
-        this.dialogName = (item || {}).name;
-        this.dialogSalary = (item || {}).salary;
-        this.dialogAge = (item || {}).age;
+        this.dialogForm = {...item};
+        // this.dialogForm.dialogId = (item || {}).id;
+        // this.dialogForm.dialogName = (item || {}).name;
+        // this.dialogForm.dialogSalary = (item || {}).salary;
+        // this.dialogForm.dialogAge = (item || {}).age;
       },
 
-      save() {
-        let data = {
+      add() {
+        let payload = {
           name: this.dialogName,
           salary: this.dialogSalary,
           age: this.dialogAge
         }
+        console.log(name);
+        APIService.createEmployee(data,payload);
+        this.employees.push(payload)
+        showDialog(false);
       },
 
       update(id) {
-        this.employees = APIService.updateEmployee(id);
+        let payload = {
+          name: this.dialogName,
+          salary: this.dialogSalary,
+          age: this.dialogAge
+        }
+        this.employees = APIService.updateEmployee(id,payload);
+        showDialog(false);
       },
 
       async remove(id) {

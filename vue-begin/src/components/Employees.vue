@@ -3,6 +3,7 @@
     <div class="header">
       <img alt="Vue logo" src="../assets/logo.png">
       <h1>{{ msg }}</h1>
+      <br>
       <h2>Add new employee</h2>
       <v-flex class="text-xs-center py-3">
         <v-btn @click="handleOpenDialog($event, 'add')" color="primary">
@@ -13,15 +14,17 @@
     </div>
 
   <template>
-    <div class="text-xs-center">
+    <div
+      class="text-xs-center"
+      v-if="isLoading">
       <v-progress-circular
-        v-show="isLoading"
         active="loading"
         indeterminate
         color="primary"
       ></v-progress-circular>
     </div>
     <ListEmployees
+        v-else
         class="list-employees"
         :employees="paginatedEmployees"
         @edit="handleOpenDialog($event, 'edit')"
@@ -66,18 +69,13 @@ export default {
   data() {
     return {
       selected: null,
-      isLoading: true,
+      isLoading: false,
       employees: [],
       employeesPerPage: 20,
       currentPage: 1,
       showDialog: false,
       dialogTitle: ""
     };
-  },
-  watch: {
-    employees() {
-      this.isLoading = false
-    }
   },
 
   computed: {
@@ -97,7 +95,9 @@ export default {
 
   methods: {
     async load() {
+      this.isLoading = true;
       this.employees = await APIService.getEmployees();
+      this.isLoading = false;
     },
 
     handleSubmit(value) {
@@ -144,12 +144,16 @@ export default {
 </script>
 
 <style scoped>
-.main-container {
-  display: grid;
-  height: 100vh;
-  grid-template-rows: auto 1fr auto;
-}
-.list-employees {
-  overflow: auto;
-}
+  .main-container {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: auto 1fr auto;
+  }
+  .list-employees {
+    overflow: auto;
+  }
+  img{
+    width: 50px;
+    height: auto;
+  }
 </style>

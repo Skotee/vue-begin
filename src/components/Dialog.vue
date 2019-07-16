@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="value" persistent max-width="500px">
     <v-card>
-      <Form @submit="handleSubmit" :initial-values="form" :validation-schema="validations">
+      <Form :key="formKey" @submit="handleSubmit" :initial-values="form" :validation-schema="validations">
         <template slot-scope="props">
           <v-card-title>
             <span class="headline">{{ title }}</span>
@@ -69,6 +69,7 @@ export default {
   },
   data() {
     return {
+      formKey: 0,
       validations: {
         salary: {
           required,
@@ -130,6 +131,11 @@ export default {
       if (numeric) errors.push("Age must be numeric");
       if (minValue) errors.push("You have to be 18 years old at least");
       return errors;
+    }
+  },
+  watch: {
+    form: function() {
+      this.formKey +=1;
     }
   }
 };

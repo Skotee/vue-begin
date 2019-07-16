@@ -1,7 +1,22 @@
 <template>
   <v-app id="app">
-    
-    <Employees msg="Customer CRUD App"/>
+    <v-toolbar fixed  dark color="#41B883">
+      <v-toolbar-title>Employee CRUD App</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items class="hidden-sm-and-down">
+        <v-btn to="/" flat>Employee list</v-btn>
+        <v-btn to="/cart" flat>Cart</v-btn>
+      </v-toolbar-items>
+    </v-toolbar>
+   
+   <div class="main-view">
+     <br>
+     <br>
+     <br>
+     <br>
+    <router-view>
+   </router-view>
+   </div>
   </v-app>
 </template>
 
@@ -28,5 +43,9 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.main-view{
+  
 }
 </style>

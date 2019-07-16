@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="header">
       <img alt="Vue logo" src="../assets/logo.png">
-      <h1>{{ msg }}</h1>
+      <h1>Cześć, to moja aplikacja</h1>
       <br>
       <h2>Add new employee</h2>
       <v-flex class="text-xs-center py-3">
@@ -63,7 +63,6 @@ export default {
     ListEmployees
   },
   props: {
-    msg: String,
     loading: Boolean,
   },
   data() {

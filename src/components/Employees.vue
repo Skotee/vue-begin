@@ -1,45 +1,38 @@
 <template>
   <div class="main-container">
     <div class="header">
-      <img alt="Vue logo" src="../assets/logo.png">
-      <h1>Cześć, to moja aplikacja</h1>
-      <br>
+      <img alt="Vue logo" src="../assets/logo.png" />
+      <h1>Application to selling, mutating and extermination employees</h1>
+      <br />
       <h2>Add new employee</h2>
       <v-flex class="text-xs-center py-3">
         <v-btn @click="handleOpenDialog($event, 'add')" color="primary">
           <v-icon>add</v-icon>Add Employee
         </v-btn>
       </v-flex>
-      <h2>Display all employees</h2>
+      <h2>List of all available employees for sell</h2>
     </div>
 
-  <template>
-    <div
-      class="text-xs-center"
-      v-if="isLoading">
-      <v-progress-circular
-        active="loading"
-        indeterminate
-        color="primary"
-      ></v-progress-circular>
-    </div>
-    <ListEmployees
+    <template>
+      <div class="text-xs-center" v-if="isLoading">
+        <v-progress-circular active="loading" indeterminate color="primary"></v-progress-circular>
+      </div>
+      <ListEmployees
         v-else
         class="list-employees"
         :employees="paginatedEmployees"
         @edit="handleOpenDialog($event, 'edit')"
         @remove="handleRemove"
-    />
-
-  </template>
-  <div class="text-xs-left pagination">
-    <v-pagination
-      class="pagination-list"
-      v-model="currentPage"
-      :length="length"
-      :total-visible="10"
-    ></v-pagination>
-  </div>
+      />
+    </template>
+    <div class="text-xs-left pagination">
+      <v-pagination
+        class="pagination-list"
+        v-model="currentPage"
+        :length="length"
+        :total-visible="10"
+      ></v-pagination>
+    </div>
 
     <Dialog
       @close="handleClose"
@@ -63,7 +56,7 @@ export default {
     ListEmployees
   },
   props: {
-    loading: Boolean,
+    loading: Boolean
   },
   data() {
     return {
@@ -143,16 +136,16 @@ export default {
 </script>
 
 <style scoped>
-  .main-container {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: auto 1fr auto;
-  }
-  .list-employees {
-    overflow: auto;
-  }
-  img{
-    width: 50px;
-    height: auto;
-  }
+.main-container {
+  display: grid;
+  height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+.list-employees {
+  overflow: auto;
+}
+img {
+  width: 50px;
+  height: auto;
+}
 </style>

@@ -1,4 +1,6 @@
 <template>
+<div>
+
   <v-list three-line>
     <v-list-tile v-for="employee in employees" class="employees" :key="employee.id">
       <v-list-tile-content>
@@ -23,6 +25,7 @@
       </v-list-tile-action>
     </v-list-tile>
   </v-list>
+  </div>
 </template>
 
 <script>

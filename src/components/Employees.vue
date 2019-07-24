@@ -2,7 +2,7 @@
   <div class="main-container">
     <div class="header">
       <img alt="Vue logo" src="../assets/logo.png" />
-      <h1>Application to selling, mutating and extermination employees</h1>
+      <h1>Application to selling, mutating and exterminating employees</h1>
       <br />
       <h2>Add new employee</h2>
       <v-flex class="text-xs-center py-3">
@@ -14,6 +14,7 @@
     </div>
 
     <template>
+      <ToolbarForm v-model="filters"></ToolbarForm>
       <div class="text-xs-center" v-if="isLoading">
         <v-progress-circular active="loading" indeterminate color="primary"></v-progress-circular>
       </div>
@@ -45,15 +46,19 @@
 </template>
 
 <script>
+import ToolbarForm from "./ToolbarForm";
 import * as APIService from "../APIService";
 import Dialog from "./Dialog";
 import ListEmployees from "./ListEmployees";
+import { mapping, SORT_ALPHABETICAL } from "../sortOptions"
+import orderBy from 'lodash-es/orderBy'
 
 export default {
   name: "Employees",
   components: {
     Dialog,
-    ListEmployees
+    ListEmployees,
+    ToolbarForm
   },
   props: {
     loading: Boolean
@@ -66,18 +71,29 @@ export default {
       employeesPerPage: 20,
       currentPage: 1,
       showDialog: false,
-      dialogTitle: ""
+      dialogTitle: "",
+      filters: {
+        name: "",
+        orderMode: SORT_ALPHABETICAL
+      }
     };
   },
 
   computed: {
     paginatedEmployees() {
-      const startIndex = this.currentPage * this.employeesPerPage;
-      const endIndex = (this.currentPage + 1) * this.employeesPerPage - 1;
-      return this.employees.slice(startIndex, endIndex);
+      const startIndex = (this.currentPage - 1) * this.employeesPerPage;
+      const endIndex = this.currentPage * this.employeesPerPage;
+      return this.sortedEmployees.slice(startIndex, endIndex);
+    },
+    filteredEmployees() {
+      return this.employees.filter(employee => employee.employee_name.toLowerCase().includes(this.filters.name.toLowerCase()));
+      },
+    sortedEmployees() {
+      const { field, direction } = mapping[this.filters.orderMode];
+      return orderBy(this.filteredEmployees, field, direction);
     },
     length() {
-      return Math.floor(this.employees.length / this.employeesPerPage);
+      return Math.ceil(this.sortedEmployees.length / this.employeesPerPage);
     }
   },
 
@@ -91,7 +107,6 @@ export default {
       this.employees = await APIService.getEmployees();
       this.isLoading = false;
     },
-
     handleSubmit(value) {
       const employee = {
         employee_age: value.age,
@@ -139,7 +154,7 @@ export default {
 .main-container {
   display: grid;
   height: 100vh;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto auto 1fr auto;
 }
 .list-employees {
   overflow: auto;

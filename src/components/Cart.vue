@@ -16,7 +16,7 @@
       </v-list-tile>
     </v-list>
 
-    <h2>Remove all items</h2>
+    <h2>Remove all employees from cart</h2>
     <v-btn icon @click="removeAll">
       <v-icon>remove_shopping_cart</v-icon>
     </v-btn>

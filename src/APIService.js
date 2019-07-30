@@ -1,11 +1,12 @@
 import axios from 'axios';
 const API_URL = 'http://dummy.restapiexample.com/api/v1';
-import { Employee } from './models/Employee'
+// import { Employee } from './models/Employee'
 
   export const getEmployees = async () => {
     const url = `${API_URL}/employees`;
     const { data } = await axios.get(url);
-    return data.map(entry => new Employee(entry));
+    return data;
+    // return data.map(entry => new Employee(entry));
   }
 
   export const createEmployee = async (payload) => {

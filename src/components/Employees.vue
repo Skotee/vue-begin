@@ -55,6 +55,8 @@ import ListEmployees from "./ListEmployees";
 import { mapping, SORT_ALPHABETICAL } from "../utils/sortOptions";
 import orderBy from "lodash-es/orderBy";
 import Employee from "./Employee";
+import { mapMutations } from 'vuex'
+import {SET_SNACK_MESSAGE} from "../store/types/snackbar.types"
 
 export default {
   name: "Employees",
@@ -79,7 +81,8 @@ export default {
       filters: {
         name: "",
         orderMode: SORT_ALPHABETICAL
-      }
+      },
+      snackName: ""
     };
   },
 
@@ -115,22 +118,30 @@ export default {
       this.employees = await APIService.getEmployees();
       this.isLoading = false;
     },
-    handleSubmit(value) {
+    handleSubmit(value, snack) {
       const employee = {
         employee_age: value.age,
         employee_name: value.name,
         employee_salary: value.salary
       };
+      this.selected
+        ? this.handleUpdate(value)
+        : this.handleCreate(value, employee)
 
-      if (this.selected) {
-        APIService.updateEmployee(this.selected.id, value);
-      } else {
-        APIService.createEmployee(value);
-        this.employees.push(employee);
-      }
       this.showDialog = false;
-    },
+      this.$router.push('/');
 
+      this.selected
+        ? this.setSnack("To jest snack")
+        : this.setSnack("To jest snnnnack");
+    },
+    handleCreate(value, employee) {
+      APIService.createEmployee(value);
+      this.employees.push(employee);
+    },
+    handleUpdate(value) {
+      APIService.updateEmployee(this.selected.id, value);
+    },
     handleOpenDialog(value, mode) {
       //nazwa wydarzenia
       switch (mode) {
@@ -153,7 +164,10 @@ export default {
     async handleRemove(id) {
       await APIService.deleteEmployee(id);
       this.employees = this.employees.filter(employee => employee.id !== id);
-    }
+    },
+    ...mapMutations({
+      setSnack: SET_SNACK_MESSAGE,
+    })
   }
 };
 </script>

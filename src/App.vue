@@ -23,18 +23,19 @@
       <br />
       <router-view></router-view>
     </div>
+    <Snackbar></Snackbar>
   </v-app>
 </template>
 
 <script>
-import Employees from "./components/Employees.vue";
 import {  GET_CART_TOTAL_COUNT  } from "./store/types/cart.types"
 import { mapGetters } from 'vuex'
+import Snackbar from "./components/Snackbar";
 
 export default {
   name: "app",
   components: {
-    Employees
+    Snackbar
   },
   computed:{
     ...mapGetters({

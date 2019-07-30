@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import sortOptions from "../sortOptions";
+import sortOptions from "../utils/sortOptions";
 import {
   SORT_ALPHABETICAL,
   SORT_ASC_SALARY,
   SORT_DESC_SALARY,
   SORT_ASC_AGE,
   SORT_DESC_AGE
-} from "../sortOptions";
+} from "../utils/sortOptions";
 
 export default {
   name: "ToolbarForm",

@@ -52,7 +52,7 @@ import ToolbarForm from "./ToolbarForm";
 import * as APIService from "../APIService";
 import Dialog from "./Dialog";
 import ListEmployees from "./ListEmployees";
-import { mapping, SORT_ALPHABETICAL } from "../sortOptions";
+import { mapping, SORT_ALPHABETICAL } from "../utils/sortOptions";
 import orderBy from "lodash-es/orderBy";
 import Employee from "./Employee";
 

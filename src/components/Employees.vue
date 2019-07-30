@@ -18,13 +18,15 @@
       <div class="text-xs-center" v-if="isLoading">
         <v-progress-circular active="loading" indeterminate color="primary"></v-progress-circular>
       </div>
-      <ListEmployees
-        v-else
-        class="list-employees"
-        :employees="paginatedEmployees"
-        @edit="handleOpenDialog($event, 'edit')"
-        @remove="handleRemove"
-      />
+      <ListEmployees v-else class="list-employees" :employees="paginatedEmployees">
+        <template v-slot:default="{employee}">
+          <Employee
+            :employee="employee"
+            @edit="handleOpenDialog($event, 'edit')"
+            @remove="handleRemove"
+          ></Employee>
+        </template>
+      </ListEmployees>
     </template>
     <div class="text-xs-left pagination">
       <v-pagination
@@ -50,15 +52,17 @@ import ToolbarForm from "./ToolbarForm";
 import * as APIService from "../APIService";
 import Dialog from "./Dialog";
 import ListEmployees from "./ListEmployees";
-import { mapping, SORT_ALPHABETICAL } from "../sortOptions"
-import orderBy from 'lodash-es/orderBy'
+import { mapping, SORT_ALPHABETICAL } from "../sortOptions";
+import orderBy from "lodash-es/orderBy";
+import Employee from "./Employee";
 
 export default {
   name: "Employees",
   components: {
     Dialog,
     ListEmployees,
-    ToolbarForm
+    ToolbarForm,
+    Employee
   },
   props: {
     loading: Boolean
@@ -86,8 +90,12 @@ export default {
       return this.sortedEmployees.slice(startIndex, endIndex);
     },
     filteredEmployees() {
-      return this.employees.filter(employee => employee.employee_name.toLowerCase().includes(this.filters.name.toLowerCase()));
-      },
+      return this.employees.filter(employee =>
+        employee.employee_name
+          .toLowerCase()
+          .includes(this.filters.name.toLowerCase())
+      );
+    },
     sortedEmployees() {
       const { field, direction } = mapping[this.filters.orderMode];
       return orderBy(this.filteredEmployees, field, direction);

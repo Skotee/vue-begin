@@ -1,5 +1,5 @@
-const Employees = () => import( /* webpackChunkName: "employees" */ '../components/Employees.vue')
-const Cart = () => import( /* webpackChunkName: "cart" */ '../components/Cart.vue')
+const Employees = () => import( /* webpackChunkName: "employees" */ '../views/Employees.vue')
+const Cart = () => import( /* webpackChunkName: "cart" */ '../views/Cart.vue')
 
 const routes = [{
     path: '/cart',

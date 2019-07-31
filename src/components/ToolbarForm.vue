@@ -9,19 +9,22 @@
       ></v-text-field>
     </v-flex>
     <v-spacer></v-spacer>
+
     <v-flex xs12 md4>
       <v-select
-      v-model="value.orderMode"
-      :items="sortOptionsArray"
-      label="Sort by"
-      append-icon="sort"
+        v-model="value.orderMode"
+        :items="sortOptionsArray"
+        label="Sort by"
+        append-icon="sort"
       ></v-select>
     </v-flex>
+    <v-btn @click="$emit('add')" color= "rgb(65, 184, 131)">
+      <v-icon>add</v-icon>Add Employee
+    </v-btn>
   </v-layout>
 </template>
 
 <script>
-import sortOptions from "../utils/sortOptions";
 import {
   SORT_ALPHABETICAL,
   SORT_ASC_SALARY,
@@ -47,10 +50,30 @@ export default {
     value: {
       type: Object,
       required: true
+    },
+    employee: {
+      type: Object
+    }
+  },
+  methods: {
+    handleOpenDialog(value, mode) {
+      //nazwa wydarzenia
+      switch (mode) {
+        case "add":
+          this.dialogTitle = "Add employee";
+          this.selected = null;
+          break;
+        case "edit":
+          this.dialogTitle = "Edit employee";
+          this.selected = value;
+          break;
+      }
+      this.showDialog = true;
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+
 </style>

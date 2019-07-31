@@ -1,20 +1,9 @@
 <template>
   <div class="main-container">
-    <div class="header">
-      <img alt="Vue logo" src="../assets/logo.png" />
-      <h1>Application to selling, mutating and exterminating employees</h1>
-      <br />
-      <h2>Add new employee</h2>
-      <v-flex class="text-xs-center py-3">
-        <v-btn @click="handleOpenDialog($event, 'add')" color="primary">
-          <v-icon>add</v-icon>Add Employee
-        </v-btn>
-      </v-flex>
-      <h2>List of all available employees for sell</h2>
-    </div>
-
+    <Header></Header>
     <template>
-      <ToolbarForm v-model="filters"></ToolbarForm>
+      <ToolbarForm v-model="filters"
+        @add="handleOpenDialog($event, 'add')"></ToolbarForm>
       <div class="text-xs-center" v-if="isLoading">
         <v-progress-circular active="loading" indeterminate color="primary"></v-progress-circular>
       </div>
@@ -48,15 +37,16 @@
 </template>
 
 <script>
-import ToolbarForm from "./ToolbarForm";
+import ToolbarForm from "../components/ToolbarForm";
 import * as APIService from "../APIService";
-import Dialog from "./Dialog";
-import ListEmployees from "./ListEmployees";
+import Dialog from "../components/Dialog";
+import ListEmployees from "../components/ListEmployees";
 import { mapping, SORT_ALPHABETICAL } from "../utils/sortOptions";
 import orderBy from "lodash-es/orderBy";
-import Employee from "./Employee";
-import { mapMutations } from 'vuex'
-import {SET_SNACK_MESSAGE} from "../store/types/snackbar.types"
+import Employee from "../components/Employee";
+import Header from "../components/Header";
+import { mapMutations } from "vuex";
+import { SET_SNACK_MESSAGE } from "../store/types/snackbar.types";
 
 export default {
   name: "Employees",
@@ -64,7 +54,8 @@ export default {
     Dialog,
     ListEmployees,
     ToolbarForm,
-    Employee
+    Employee,
+    Header
   },
   props: {
     loading: Boolean
@@ -118,7 +109,7 @@ export default {
       this.employees = await APIService.getEmployees();
       this.isLoading = false;
     },
-    handleSubmit(value, snack) {
+    handleSubmit(value) {
       const employee = {
         employee_age: value.age,
         employee_name: value.name,
@@ -126,14 +117,14 @@ export default {
       };
       this.selected
         ? this.handleUpdate(value)
-        : this.handleCreate(value, employee)
+        : this.handleCreate(value, employee);
 
       this.showDialog = false;
-      this.$router.push('/');
+      this.$router.push("/");
 
       this.selected
-        ? this.setSnack("To jest snack")
-        : this.setSnack("To jest snnnnack");
+        ? this.setSnack("Edycja zakończona z powodzeniem")
+        : this.setSnack("Pracownik został dodany");
     },
     handleCreate(value, employee) {
       APIService.createEmployee(value);
@@ -164,9 +155,10 @@ export default {
     async handleRemove(id) {
       await APIService.deleteEmployee(id);
       this.employees = this.employees.filter(employee => employee.id !== id);
+      this.setSnack("Usunięto pracownika z bazy")
     },
     ...mapMutations({
-      setSnack: SET_SNACK_MESSAGE,
+      setSnack: SET_SNACK_MESSAGE
     })
   }
 };
@@ -180,9 +172,5 @@ export default {
 }
 .list-employees {
   overflow: auto;
-}
-img {
-  width: 50px;
-  height: auto;
 }
 </style>

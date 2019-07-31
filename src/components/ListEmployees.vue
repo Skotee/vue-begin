@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>List of all available employees:</h2>
     <v-list three-line>
       <v-list-tile v-for="employee in employees" class="employees" :key="employee.id">
         <slot :employee="employee"></slot>

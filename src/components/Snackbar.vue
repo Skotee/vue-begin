@@ -1,33 +1,36 @@
 <template>
- <v-snackbar v-model="show">
+  <v-snackbar v-model="show">
     {{message}}
     <v-btn flat color="accent" @click.native="show = false">Close</v-btn>
   </v-snackbar>
 </template>
 
 <script>
-import {mapMutations} from "vuex"
-import {SET_SNACK_MESSAGE} from "../store/types/snackbar.types"
+import { mapMutations } from "vuex";
+import { SET_SNACK_MESSAGE } from "../store/types/snackbar.types";
 export default {
-  data () {
+  data() {
     return {
       show: false,
-      message: ''
-    }
+      message: ""
+    };
   },
-  created: function () {
-    this.$store.watch(state => state.snackbar.snack, () => {
-      const msg = this.$store.state.snackbar.snack
-      if (msg !== '') {
-        this.show = true;
-        this.message = this.$store.state.snackbar.snack;
-        this.setSnack("");
+  created: function() {
+    this.$store.watch(
+      state => state.snackbar.snack,
+      () => {
+        const msg = this.$store.state.snackbar.snack;
+        if (msg !== "") {
+          this.show = true;
+          this.message = this.$store.state.snackbar.snack;
+          this.setSnack("");
+        }
       }
-    })
+    );
   },
   methods: {
     ...mapMutations({
-      setSnack: SET_SNACK_MESSAGE,
+      setSnack: SET_SNACK_MESSAGE
     })
   }
 };

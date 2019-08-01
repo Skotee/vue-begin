@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="main-view" style="padding-top: 20px;">
     <h2>Your cart:</h2>
     <v-list three-line>
       <v-list-tile v-for="item in items" :key="item.id">
@@ -16,7 +16,7 @@
       </v-list-tile>
     </v-list>
 
-    <h2>Remove all items</h2>
+    <h2>Remove all employees from cart</h2>
     <v-btn icon @click="removeAll">
       <v-icon>remove_shopping_cart</v-icon>
     </v-btn>
@@ -47,5 +47,8 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+/* .main-view{
+  padding-top: 50px;
+} */
 </style>

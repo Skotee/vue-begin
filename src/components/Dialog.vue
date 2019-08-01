@@ -56,12 +56,9 @@ import { Form } from "@v-forms/core";
 import {
   required,
   minLength,
-  maxLength,
-  salary,
   numeric,
   minValue
 } from "vuelidate/lib/validators";
-import { setTimeout } from "timers";
 
 export default {
   components: {
@@ -111,7 +108,7 @@ export default {
     }
   },
   methods: {
-    handleSubmit(values, actions) {
+    handleSubmit(values) {
       this.$emit("submit", values);
     },
     getNameErrors({ required, minLength } = {}) {

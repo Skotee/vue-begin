@@ -1,7 +1,7 @@
 <template>
   <Fragment>
     <img alt="Vue logo" src="../assets/logo.png" />
-    <h1>Application to selling, mutating and exterminating employees</h1>
+    <h1>{{ $t("message.header") }}</h1>
     <br />
   </Fragment>
 </template>

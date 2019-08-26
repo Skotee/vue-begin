@@ -38,7 +38,7 @@
 
 <script>
 import ToolbarForm from "../components/ToolbarForm";
-import * as APIService from "../APIService";
+import * as employees from "../api/employees";
 import Dialog from "../components/Dialog";
 import ListEmployees from "../components/ListEmployees";
 import { mapping, SORT_ALPHABETICAL } from "../utils/sortOptions";
@@ -106,7 +106,7 @@ export default {
   methods: {
     async load() {
       this.isLoading = true;
-      this.employees = await APIService.getEmployees();
+      this.employees = await employees.getEmployees();
       this.isLoading = false;
     },
     handleSubmit(value) {
@@ -127,11 +127,11 @@ export default {
         : this.setSnack("Pracownik został dodany");
     },
     handleCreate(value, employee) {
-      APIService.createEmployee(value);
+      employees.createEmployee(value);
       this.employees.push(employee);
     },
     handleUpdate(value) {
-      APIService.updateEmployee(this.selected.id, value);
+      employees.updateEmployee(this.selected.id, value);
     },
     handleOpenDialog(value, mode) {
       //nazwa wydarzenia
@@ -153,7 +153,7 @@ export default {
     },
 
     async handleRemove(id) {
-      await APIService.deleteEmployee(id);
+      await employees.deleteEmployee(id);
       this.employees = this.employees.filter(employee => employee.id !== id);
       this.setSnack("Usunięto pracownika z bazy")
     },

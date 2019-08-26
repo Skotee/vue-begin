@@ -1,12 +1,10 @@
 import axios from 'axios';
-const API_URL = 'http://dummy.restapiexample.com/api/v1';
-// import { Employee } from './models/Employee'
+const API_URL = process.env.VUE_APP_API_URL;
 
   export const getEmployees = async () => {
     const url = `${API_URL}/employees`;
     const { data } = await axios.get(url);
     return data;
-    // return data.map(entry => new Employee(entry));
   }
 
   export const createEmployee = async (payload) => {

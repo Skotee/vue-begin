@@ -12,8 +12,8 @@
           <v-icon>shopping_cart</v-icon>
         </v-badge>
       </v-btn>
-      <template v-if="islogged">
-        <v-btn flat>Logged as {{ credential.name }}</v-btn>
+      <template v-if="isLogged">
+        <span class="p-21">Logged as {{ username.name }}</span>
         <v-btn @click="handleLogout" flat>Logout</v-btn>
       </template>
       <template v-else>
@@ -26,6 +26,7 @@
 
 <script>
 import { GET_CART_TOTAL_COUNT } from "../store/types/cart.types";
+import { SET_SNACK_MESSAGE } from "../store/types/snackbar.types";
 import {
   GET_USERNAME,
   AUTH_USERNAME,
@@ -33,40 +34,39 @@ import {
   IS_LOGGED,
   ACTION_LOGOUT
 } from "../store/types/auth.types";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
-  data() {
-    return {
-      credential: {
-        name: "",
-        password: ""
-      }
-    };
-  },
   name: "Navbar",
   computed: {
     ...mapGetters({
       cartCounter: GET_CART_TOTAL_COUNT,
       username: GET_USERNAME,
-      islogged: IS_LOGGED
-    }),
-    isLogged: function() {
-      return this.$store.getters.isLogged;
-    }
+      isLogged: IS_LOGGED
+    })
+    // isLogged: function() {
+    //   return this.$store.getters.isLogged; //jaka różnica?
+    // }
   },
   methods: {
     ...mapActions({
       logout: ACTION_LOGOUT
     }),
+    ...mapMutations({
+      setSnack: SET_SNACK_MESSAGE
+    }),
     async handleLogout(e) {
       e.preventDefault();
       await this.logout();
-      this.$router.push("/"); //czy ({path:'/'})?
+      this.setSnack("You have succesfully logged out");
+      this.$router.push("/login");
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+.p-21{
+  padding: 21px;
+}
 </style>

@@ -12,6 +12,9 @@ const routes = [{
   },
   {
     path: '/',
+    meta: {
+      requiresAuth: true
+    },
     component: Employees,
   },
   {

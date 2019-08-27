@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 100px;">
+  <div class="pt-100">
     <h1>Log In</h1>
     <v-form>
       <v-container>
@@ -39,12 +39,13 @@
 <script>
 import { validationMixin } from "vuelidate";
 import { required, maxLength } from "vuelidate/lib/validators";
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapMutations } from "vuex";
 import {
   AUTH_USERNAME,
   AUTH_TOKEN,
   ACTION_LOGIN
 } from "../store/types/auth.types";
+import { SET_SNACK_MESSAGE } from "../store/types/snackbar.types";
 
 export default {
   data() {
@@ -61,6 +62,7 @@ export default {
       }
     };
   },
+  name: "Login",
   mixins: [validationMixin],
   validations: {
     credential: {
@@ -86,20 +88,31 @@ export default {
     ...mapActions({
       login: ACTION_LOGIN
     }),
+    ...mapMutations({
+      setSnack: SET_SNACK_MESSAGE
+    }),
     async handleSubmit(e) {
       e.preventDefault();
       const { name, password } = this.credential;
-      await this.login({
-        name,
-        password
-      });
-      this.$router.push("/cart");
+      try {
+        await this.login({
+          name,
+          password
+        });
+      } catch (error) {
+        console.log(error);
+      }
+      this.setSnack("You have succesfully logged in");
+      this.$router.push("/");
     }
   }
 };
 </script>
 
 <style scoped>
+.pt-100{
+  padding-top: 100px;
+}
 button {
   background: #41b883;
   color: white;

@@ -15,7 +15,6 @@ router.beforeEach((to, from, next) => {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (!store.getters.isLogged) {
-      alert('To get to cart you must be logged in')
       next({
         path: '/login',
         query: {

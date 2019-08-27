@@ -25,24 +25,27 @@ export default {
       state[AUTH_USERNAME] = payload;
     },
     [SET_TOKEN]: (state, payload) => {
-      TokenService.saveToken(payload);
+      state[AUTH_TOKEN] = payload
     },
   },
   actions: {
-    [ACTION_LOGIN]: async function ({
-      commit
-    }, payload) {
-      const {
-        token,
-        user
-      } = await logIn(payload)
-      commit(SET_TOKEN, token);
-      commit(SET_USERNAME, user);
+    [ACTION_LOGIN]: async function ({ commit }, payload) {
+      try {
+        const {
+          token,
+          user
+        } = await logIn(payload)
+        commit(SET_TOKEN, token);
+        TokenService.saveToken(token)
+        commit(SET_USERNAME, user);
+      } catch(err) {
+        TokenService.removeToken()
+      }
     },
     [ACTION_LOGOUT]: function ({
       commit
     }) {
-      commit(SET_TOKEN, null);
+      commit(SET_TOKEN, '')
       TokenService.removeToken();
       commit(SET_USERNAME, null);
     },

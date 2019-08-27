@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 100px;">
+  <div class="pt-100">
     <h1>Register new user</h1>
     <v-form>
       <v-container>
@@ -117,8 +117,8 @@ export default {
       let { name, password, password_confirmation } = this.credential;
       if (password === password_confirmation && password.length > 0) {
         let data = {
-          name: this.credential.name,
-          password: this.credential.password
+          name,
+          password
         };
         await register(data);
         this.setSnack("Succesfully registered");
@@ -143,15 +143,8 @@ export default {
 </script>
 
 <style scoped>
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-  width: 100%;
-  padding: 15px;
-  margin: 5px 0 22px 0;
-  display: inline-block;
-  border: none;
-  background: #f1f1f1;
+.pt-100{
+  padding-top: 100px;
 }
 button {
   background: #41b883;

@@ -61,11 +61,7 @@ export default {
     }),
     async handleLogout(e) {
       e.preventDefault();
-      const { name, password } = "";
-      await this.logout({
-        name,
-        password
-      });
+      await this.logout();
       this.$router.push("/"); //czy ({path:'/'})?
     }
   }

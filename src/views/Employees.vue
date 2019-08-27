@@ -38,7 +38,7 @@
 
 <script>
 import ToolbarForm from "../components/ToolbarForm";
-import * as employees from "../api/employees";
+import {getEmployees,createEmployee,updateEmployee,deleteEmployee} from "../api/employees";
 import Dialog from "../components/Dialog";
 import ListEmployees from "../components/ListEmployees";
 import { mapping, SORT_ALPHABETICAL } from "../utils/sortOptions";
@@ -106,7 +106,7 @@ export default {
   methods: {
     async load() {
       this.isLoading = true;
-      this.employees = await employees.getEmployees();
+      this.employees = await getEmployees();
       this.isLoading = false;
     },
     handleSubmit(value) {
@@ -127,11 +127,11 @@ export default {
         : this.setSnack("Pracownik został dodany");
     },
     handleCreate(value, employee) {
-      employees.createEmployee(value);
+      createEmployee(value);
       this.employees.push(employee);
     },
     handleUpdate(value) {
-      employees.updateEmployee(this.selected.id, value);
+      updateEmployee(this.selected.id, value);
     },
     handleOpenDialog(value, mode) {
       //nazwa wydarzenia
@@ -153,7 +153,7 @@ export default {
     },
 
     async handleRemove(id) {
-      await employees.deleteEmployee(id);
+      await deleteEmployee(id);
       this.employees = this.employees.filter(employee => employee.id !== id);
       this.setSnack("Usunięto pracownika z bazy")
     },

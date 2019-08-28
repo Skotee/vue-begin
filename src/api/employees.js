@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'http://dummy.restapiexample.com/api/v1';
+const API_URL = process.env.VUE_APP_API_URL;
 
   export const getEmployees = async () => {
     const url = `${API_URL}/employees`;
